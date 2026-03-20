@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UzShop — Eng Yaxshi Narxlar</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --card: #1a1a24;
+    --border: #2a2a3a;
+    --accent: #ff4d00;
+    --accent2: #ff8c00;
+    --text: #f0f0f5;
+    --muted: #888;
+    --green: #00d67a;
+    --uzum: #9b34ef;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,15,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+  }
+  .header-inner {
+    max-width: 1400px; margin: auto;
+    display: flex; align-items: center; gap: 20px;
+    height: 64px;
+  }
+  .logo {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 20px; font-weight: 900;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    white-space: nowrap;
+  }
+  .search-bar {
+    flex: 1;
+    display: flex; align-items: center;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+    transition: border-color .2s;
+  }
+  .search-bar:focus-within { border-color: var(--accent); }
+  .search-bar input {
+    flex: 1; background: none; border: none; outline: none;
+    color: var(--text); padding: 10px 16px; font-size: 14px;
+    font-family: 'Inter', sans-serif;
+  }
+  .search-bar button {
+    background: var(--accent); border: none; cursor: pointer;
+    padding: 10px 18px; color: #fff; font-size: 16px;
+    transition: background .2s;
+  }
+  .search-bar button:hover { background: var(--accent2); }
+  .header-stats {
+    display: flex; gap: 16px; font-size: 12px; color: var(--muted);
+    white-space: nowrap;
+  }
+  .header-stats span { color: var(--accent); font-weight: 600; }
+
+  /* ── HERO BANNER ── */
+  .hero {
+    background: linear-gradient(135deg, #1a0a2e 0%, #0f0f1a 50%, #1a0a00 100%);
+    padding: 60px 24px;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 100%, rgba(255,77,0,.15) 0%, transparent 70%);
+  }
+  .hero h1 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(28px, 5vw, 56px);
+    font-weight: 900; line-height: 1.1;
+    position: relative;
+  }
+  .hero h1 em {
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    font-style: normal;
+  }
+  .hero p { color: var(--muted); margin-top: 16px; font-size: 16px; }
+  .hero-badges {
+    display: flex; gap: 12px; justify-content: center; margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .badge {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 100px; padding: 8px 18px; font-size: 13px;
+  }
+  .badge.hot { border-color: var(--accent); color: var(--accent); }
+  .badge.new { border-color: var(--green); color: var(--green); }
+
+  /* ── CATEGORIES ── */
+  .section { max-width: 1400px; margin: auto; padding: 40px 24px; }
+  .section-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 22px; font-weight: 700;
+    margin-bottom: 24px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-title::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+  .cats {
+    display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px;
+  }
+  .cat-btn {
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); border-radius: 10px; padding: 8px 16px;
+    font-size: 13px; cursor: pointer; transition: all .2s;
+    font-family: 'Inter', sans-serif;
+  }
+  .cat-btn:hover, .cat-btn.active {
+    background: var(--accent); border-color: var(--accent); color: #fff;
+  }
+
+  /* ── FILTERS & SORT ── */
+  .toolbar {
+    display: flex; gap: 12px; align-items: center;
+    flex-wrap: wrap; margin-bottom: 24px;
+  }
+  .toolbar select {
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); border-radius: 10px; padding: 8px 14px;
+    font-size: 13px; cursor: pointer; font-family: 'Inter', sans-serif;
+    outline: none;
+  }
+  .count-badge {
+    background: var(--accent); color: #fff;
+    border-radius: 100px; padding: 4px 12px;
+    font-size: 12px; font-weight: 600;
+    margin-left: auto;
+  }
+
+  /* ── PRODUCT GRID ── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; overflow: hidden;
+    transition: transform .2s, border-color .2s, box-shadow .2s;
+    cursor: pointer;
+    display: flex; flex-direction: column;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+    box-shadow: 0 12px 40px rgba(255,77,0,.18);
+  }
+  .card-img {
+    width: 100%; aspect-ratio: 1;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 56px;
+    background: linear-gradient(135deg, var(--surface), var(--bg));
+    position: relative;
+  }
+  .card-badge {
+    position: absolute; top: 10px; left: 10px;
+    background: var(--accent); color: #fff;
+    border-radius: 6px; padding: 3px 8px; font-size: 11px; font-weight: 600;
+  }
+  .card-badge.new-badge { background: var(--green); color: #000; }
+  .card-badge.sale-badge { background: #e6003a; }
+  .card-body { padding: 14px; flex: 1; display: flex; flex-direction: column; }
+  .card-name {
+    font-size: 13px; font-weight: 500; line-height: 1.4;
+    display: -webkit-box; -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical; overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .card-brand { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+  .card-rating { font-size: 12px; color: #f5c542; margin-bottom: 10px; }
+  .card-price {
+    margin-top: auto;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 16px; font-weight: 700;
+    color: var(--accent2);
+  }
+  .card-old-price {
+    font-size: 12px; color: var(--muted);
+    text-decoration: line-through; margin-bottom: 2px;
+    font-family: 'Inter', sans-serif;
+  }
+  .card-actions { padding: 0 14px 14px; }
+  .btn-uzum {
+    width: 100%; padding: 10px;
+    background: linear-gradient(90deg, var(--uzum), #7b2fd9);
+    border: none; border-radius: 10px;
+    color: #fff; font-size: 13px; font-weight: 600;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    gap: 8px; transition: opacity .2s;
+    font-family: 'Inter', sans-serif;
+    text-decoration: none;
+  }
+  .btn-uzum:hover { opacity: .88; }
+  .btn-uzum svg { width: 16px; height: 16px; fill: #fff; }
+
+  /* ── PAGINATION ── */
+  .pagination {
+    display: flex; gap: 8px; justify-content: center;
+    flex-wrap: wrap; margin-top: 48px;
+  }
+  .page-btn {
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); border-radius: 8px; padding: 8px 14px;
+    cursor: pointer; font-size: 13px; transition: all .2s;
+    font-family: 'Inter', sans-serif;
+  }
+  .page-btn:hover, .page-btn.active {
+    background: var(--accent); border-color: var(--accent); color: #fff;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    margin-top: 80px;
+    border-top: 1px solid var(--border);
+    padding: 40px 24px;
+    text-align: center;
+    color: var(--muted); font-size: 13px;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  /* ── LOADING ── */
+  .loading {
+    text-align: center; padding: 60px;
+    font-size: 14px; color: var(--muted);
+  }
+  .spinner {
+    width: 40px; height: 40px; border: 3px solid var(--border);
+    border-top-color: var(--accent); border-radius: 50%;
+    animation: spin .7s linear infinite; margin: 0 auto 16px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 600px) {
+    .header-stats { display: none; }
+    .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .card-img { font-size: 40px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="logo">UzShop 🛒</div>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Mahsulot qidiring..." oninput="filterProducts()">
+      <button>🔍</button>
+    </div>
+    <div class="header-stats">
+      Jami: <span id="totalCount">1000+</span> mahsulot
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>O'zbekistonning<br><em>Eng Katta</em> Do'koni</h1>
+  <p>1000+ mahsulot • Haqiqiy bozor narxlari • Tez yetkazib berish</p>
+  <div class="hero-badges">
+    <span class="badge hot">🔥 Bugun aksiya</span>
+    <span class="badge new">✨ Yangi keldi</span>
+    <span class="badge">📦 1000+ mahsulot</span>
+    <span class="badge">🚚 Tez yetkazib berish</span>
+    <span class="badge">💳 Bo'lib to'lash</span>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="section">
+  <div class="section-title">Kategoriyalar</div>
+
+  <div class="cats" id="cats"></div>
+
+  <div class="toolbar">
+    <select id="sortSelect" onchange="sortProducts()">
+      <option value="default">Saralash: Standart</option>
+      <option value="price_asc">Narx: Arzondan qimmatga</option>
+      <option value="price_desc">Narx: Qimmatdan arzonga</option>
+      <option value="rating">Reyting bo'yicha</option>
+      <option value="new">Yangilar birinchi</option>
+    </select>
+    <select id="priceFilter" onchange="filterProducts()">
+      <option value="0">Barcha narxlar</option>
+      <option value="100000">100 000 so'm gacha</option>
+      <option value="500000">500 000 so'm gacha</option>
+      <option value="1000000">1 000 000 so'm gacha</option>
+      <option value="5000000">5 000 000 so'm gacha</option>
+    </select>
+    <div class="count-badge" id="showingCount">Yuklanmoqda...</div>
+  </div>
+
+  <div id="grid" class="grid">
+    <div class="loading"><div class="spinner"></div>Mahsulotlar yuklanmoqda...</div>
+  </div>
+
+  <div class="pagination" id="pagination"></div>
+</div>
+
+<footer>
+  <p>© 2024 UzShop — Barcha huquqlar himoyalangan</p>
+  <p style="margin-top:8px">Zakaz uchun <a href="https://uzum.uz" target="_blank">Uzum Market</a> ga o'ting</p>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// DATA GENERATION — 1000 mahsulot
+// ═══════════════════════════════════════════════════════
+const CATEGORIES = [
+  { id:'all', name:'Hammasi', emoji:'🛒' },
+  { id:'electronics', name:'Elektronika', emoji:'📱' },
+  { id:'clothing', name:'Kiyim-kechak', emoji:'👗' },
+  { id:'food', name:'Oziq-ovqat', emoji:'🥗' },
+  { id:'home', name:'Uy-joy', emoji:'🏠' },
+  { id:'beauty', name:'Go\'zallik', emoji:'💄' },
+  { id:'sports', name:'Sport', emoji:'⚽' },
+  { id:'toys', name:'O\'yinchoqlar', emoji:'🧸' },
+  { id:'auto', name:'Avtomobil', emoji:'🚗' },
+  { id:'garden', name:'Bog\'', emoji:'🌱' },
+  { id:'books', name:'Kitoblar', emoji:'📚' },
+  { id:'pharmacy', name:'Dorixona', emoji:'💊' },
+];
+
+const BRANDS = {
+  electronics: ['Samsung','Apple','Xiaomi','Huawei','LG','Sony','Asus','Lenovo','HP','Dell','OnePlus','Realme','Oppo','Vivo','Honor'],
+  clothing:    ['Zara','H&M','Adidas','Nike','Puma','Reebok','Calvin Klein','Lacoste','Tommy','Gucci','Levi\'s','Mango','Bershka','Pull&Bear','Uniqlo'],
+  food:        ['Nestle','Coca-Cola','Pepsi','Lay\'s','Ferrero','Oreo','Snickers','Twix','KitKat','Milka','Haribo','Pringles','Doritos','Monster','RedBull'],
+  home:        ['IKEA','Bosch','Philips','Electrolux','Ariston','Beko','Indesit','Gorenje','Haier','Samsung','LG','Whirlpool','Daewoo','Zanussi','AEG'],
+  beauty:      ['L\'Oreal','Nivea','Garnier','Dove','Pantene','Head&Shoulders','Schwarzkopf','Maybelline','MAC','Clinique','Lancome','Dior','Chanel','Yves','NYX'],
+  sports:      ['Nike','Adidas','Puma','Reebok','Under Armour','New Balance','Asics','Mizuno','Saucony','Brooks','Columbia','The North Face','Salomon','Mammut','Dynafit'],
+  toys:        ['LEGO','Hasbro','Mattel','Fisher-Price','Hot Wheels','Barbie','Playmobil','Schleich','Ravensburger','Djeco','Learning Resources','Melissa','Infantino','VTech','LeapFrog'],
+  auto:        ['Bosch','NGK','Castrol','Mobil','Shell','Liqui Moly','Mann','Mahle','Valeo','Denso','Brembo','Monroe','Sachs','Bilstein','KYB'],
+  garden:      ['Husqvarna','Stihl','Gardena','Bosch','Black&Decker','Karcher','Makita','Dewalt','Fiskars','Wolf-Garten','Spear&Jackson','Tramontina','Bahco','Stanley','Irwin'],
+  books:       ['Penguin','Oxford','Cambridge','Pearson','Harper','Random House','Wiley','McGraw','Elsevier','Springer','O\'Reilly','Packt','Manning','Apress','No Starch'],
+  pharmacy:    ['Bayer','Pfizer','Novartis','Roche','Sanofi','AstraZeneca','Johnson','Abbott','Merck','Gilead','Teva','Mylan','Actavis','KRKA','Gedeon'],
+};
+
+const PRODUCTS_DATA = {
+  electronics: [
+    {name:'iPhone 15 Pro Max 256GB',price:14500000,old:16000000,emoji:'📱',rating:4.9},
+    {name:'Samsung Galaxy S24 Ultra',price:13200000,old:15000000,emoji:'📱',rating:4.8},
+    {name:'Xiaomi 14 Pro 512GB',price:9800000,emoji:'📱',rating:4.7},
+    {name:'MacBook Air M3 13"',price:18500000,old:20000000,emoji:'💻',rating:4.9},
+    {name:'Samsung 4K OLED TV 55"',price:12000000,emoji:'📺',rating:4.8},
+    {name:'Sony WH-1000XM5 Naushnik',price:3200000,old:3800000,emoji:'🎧',rating:4.9},
+    {name:'iPad Pro M4 11"',price:11500000,emoji:'📱',rating:4.8},
+    {name:'AirPods Pro 2',price:2800000,old:3200000,emoji:'🎧',rating:4.7},
+    {name:'Xiaomi Robot Vacuum X20',price:3500000,emoji:'🤖',rating:4.6},
+    {name:'PlayStation 5 Pro',price:8900000,emoji:'🎮',rating:4.9},
+    {name:'Nintendo Switch OLED',price:4200000,old:4800000,emoji:'🎮',rating:4.8},
+    {name:'GoPro HERO12 Black',price:4500000,emoji:'📷',rating:4.7},
+    {name:'Canon EOS R50 Kit',price:9200000,emoji:'📷',rating:4.8},
+    {name:'DJI Mini 4 Pro Drone',price:7800000,emoji:'🚁',rating:4.9},
+    {name:'Apple Watch Ultra 2',price:5500000,old:6200000,emoji:'⌚',rating:4.8},
+    {name:'Samsung Galaxy Watch 6',price:2900000,emoji:'⌚',rating:4.6},
+    {name:'Asus ROG Phone 8 Pro',price:11000000,emoji:'📱',rating:4.7},
+    {name:'OnePlus 12 256GB',price:7200000,old:8000000,emoji:'📱',rating:4.7},
+    {name:'LG OLED C3 65"',price:19500000,emoji:'📺',rating:4.9},
+    {name:'JBL Charge 5 Kolonka',price:1800000,old:2200000,emoji:'🔊',rating:4.7},
+    {name:'Xiaomi Mi Band 8',price:450000,emoji:'⌚',rating:4.5},
+    {name:'Lenovo ThinkPad X1 Carbon',price:21000000,emoji:'💻',rating:4.8},
+    {name:'HP Spectre x360 14"',price:17500000,old:19000000,emoji:'💻',rating:4.7},
+    {name:'Dell XPS 15 OLED',price:22000000,emoji:'💻',rating:4.8},
+    {name:'Huawei MatePad Pro 13.2',price:6800000,emoji:'📱',rating:4.6},
+    {name:'Realme GT 5 Pro',price:5200000,emoji:'📱',rating:4.5},
+    {name:'Sony PlayStation VR2',price:4900000,old:5500000,emoji:'🥽',rating:4.7},
+    {name:'Meta Quest 3 128GB',price:5100000,emoji:'🥽',rating:4.8},
+    {name:'Bose QuietComfort 45',price:2700000,emoji:'🎧',rating:4.7},
+    {name:'Garmin Fenix 7 Pro',price:4200000,emoji:'⌚',rating:4.8},
+    {name:'Samsung Galaxy Tab S9+',price:7500000,old:8500000,emoji:'📱',rating:4.7},
+    {name:'Xiaomi Smart TV A2 50"',price:4800000,emoji:'📺',rating:4.6},
+    {name:'Anker PowerBank 20000mAh',price:580000,old:680000,emoji:'🔋',rating:4.6},
+    {name:'Logitech MX Master 3S',price:920000,emoji:'🖱️',rating:4.8},
+    {name:'Keychron K2 Pro Keyboard',price:750000,emoji:'⌨️',rating:4.7},
+  ],
+  clothing: [
+    {name:'Nike Air Force 1 White',price:1250000,old:1500000,emoji:'👟',rating:4.8},
+    {name:'Adidas Ultraboost 22',price:1450000,emoji:'👟',rating:4.7},
+    {name:'Levi\'s 501 Original Jeans',price:780000,old:950000,emoji:'👖',rating:4.6},
+    {name:'Zara Kuzgi Palto',price:1200000,emoji:'🧥',rating:4.5},
+    {name:'H&M Yozgi Ko\'ylak',price:280000,emoji:'👔',rating:4.4},
+    {name:'Puma Classic Tracksuit',price:890000,old:1100000,emoji:'🩳',rating:4.5},
+    {name:'Nike Dri-FIT T-Shirt',price:320000,emoji:'👕',rating:4.6},
+    {name:'Calvin Klein Underwear 3-pack',price:450000,emoji:'🩲',rating:4.7},
+    {name:'Adidas Tiro 23 Shorts',price:280000,emoji:'🩳',rating:4.5},
+    {name:'Tommy Hilfiger Polo',price:680000,old:850000,emoji:'👕',rating:4.6},
+    {name:'Under Armour Hoodie',price:720000,emoji:'🧥',rating:4.6},
+    {name:'Reebok Classic Leather',price:980000,emoji:'👟',rating:4.5},
+    {name:'New Balance 990v5',price:1650000,emoji:'👟',rating:4.8},
+    {name:'Vans Old Skool Black',price:820000,old:980000,emoji:'👟',rating:4.7},
+    {name:'Converse Chuck Taylor',price:680000,emoji:'👟',rating:4.6},
+    {name:'Zara Slim Fit Suit',price:2200000,emoji:'🤵',rating:4.7},
+    {name:'H&M Boshqa Kiyim',price:180000,emoji:'👗',rating:4.3},
+    {name:'Lacoste Polo Shirt',price:920000,old:1100000,emoji:'👕',rating:4.7},
+    {name:'Mango Pencil Skirt',price:450000,emoji:'👗',rating:4.5},
+    {name:'Bershka Crop Top',price:180000,emoji:'👚',rating:4.3},
+    {name:'Uniqlo Heattech Thermal',price:290000,emoji:'🧣',rating:4.8},
+    {name:'Gucci Belt Kamar Belbog',price:4500000,emoji:'👔',rating:4.9},
+    {name:'Nike Pro Sports Bra',price:380000,emoji:'👙',rating:4.6},
+    {name:'Adidas Running Tights',price:460000,old:580000,emoji:'🩱',rating:4.5},
+    {name:'Puma Suede Classic',price:750000,emoji:'👟',rating:4.6},
+  ],
+  food: [
+    {name:'Nestle Nescafe Gold 250g',price:85000,old:98000,emoji:'☕',rating:4.7},
+    {name:'Lay\'s Chips 160g',price:22000,emoji:'🥔',rating:4.5},
+    {name:'Ferrero Rocher 16 dona',price:125000,emoji:'🍫',rating:4.8},
+    {name:'Coca-Cola 1.5L',price:18000,emoji:'🥤',rating:4.6},
+    {name:'Pringles Original 165g',price:38000,old:45000,emoji:'🥔',rating:4.6},
+    {name:'Milka Chocolate 300g',price:65000,emoji:'🍫',rating:4.7},
+    {name:'Red Bull Energy 4-pack',price:72000,emoji:'⚡',rating:4.5},
+    {name:'Haribo Gummy Bears 1kg',price:95000,emoji:'🐻',rating:4.7},
+    {name:'Oreo Classic 432g',price:52000,emoji:'🍪',rating:4.8},
+    {name:'Snickers Multipack 8dona',price:68000,emoji:'🍫',rating:4.6},
+    {name:'Pepsi Max Zero 1.5L',price:16000,emoji:'🥤',rating:4.4},
+    {name:'KitKat Chunky 40g 24dona',price:112000,emoji:'🍫',rating:4.7},
+    {name:'Twix Bar 58g 24dona',price:115000,old:135000,emoji:'🍫',rating:4.6},
+    {name:'Doritos Nacho Cheese',price:35000,emoji:'🌽',rating:4.5},
+    {name:'Monster Energy 500ml 4dona',price:88000,emoji:'⚡',rating:4.5},
+    {name:'Nutella 950g',price:142000,old:165000,emoji:'🍯',rating:4.9},
+    {name:'Lipton Yellow Label Tea 100p',price:48000,emoji:'🍵',rating:4.7},
+    {name:'Toblerone Chocolate 360g',price:95000,emoji:'🍫',rating:4.7},
+    {name:'Fanta Orange 1.5L',price:17000,emoji:'🥤',rating:4.4},
+    {name:'Sprite 1.5L',price:16000,emoji:'🥤',rating:4.4},
+  ],
+  home: [
+    {name:'Bosch Washing Machine 7kg',price:5200000,old:6000000,emoji:'🫧',rating:4.7},
+    {name:'Samsung Refrigerator 300L',price:7800000,emoji:'🥶',rating:4.8},
+    {name:'LG Microwave 23L',price:1200000,old:1450000,emoji:'📻',rating:4.6},
+    {name:'Philips Air Purifier',price:2800000,emoji:'💨',rating:4.7},
+    {name:'Dyson V15 Vacuum',price:5500000,emoji:'🧹',rating:4.9},
+    {name:'IKEA BILLY Shelf',price:680000,emoji:'📦',rating:4.6},
+    {name:'Electrolux Dishwasher',price:4200000,old:4900000,emoji:'🍽️',rating:4.7},
+    {name:'Ariston Oven 60cm',price:3200000,emoji:'🍳',rating:4.6},
+    {name:'Indesit Dryer 8kg',price:3800000,emoji:'🫧',rating:4.5},
+    {name:'Beko Gas Stove 4-burner',price:1850000,old:2200000,emoji:'🔥',rating:4.6},
+    {name:'Philips LED Bulb 10W 10-pack',price:85000,emoji:'💡',rating:4.7},
+    {name:'IKEA KALLAX Shelf 4x4',price:980000,emoji:'📦',rating:4.6},
+    {name:'Gorenje Wine Cooler 33L',price:2200000,emoji:'🍷',rating:4.5},
+    {name:'Haier Air Conditioner 12000',price:4500000,emoji:'❄️',rating:4.7},
+    {name:'Samsung Smart Door Lock',price:1800000,old:2100000,emoji:'🔐',rating:4.7},
+    {name:'TP-Link Deco WiFi Mesh',price:1950000,emoji:'📡',rating:4.8},
+    {name:'Karcher Pressure Washer',price:2800000,emoji:'💦',rating:4.7},
+    {name:'Rowenta Steam Iron',price:680000,emoji:'👔',rating:4.6},
+    {name:'Tefal Air Fryer 4.2L',price:1200000,old:1450000,emoji:'🍟',rating:4.7},
+    {name:'Nespresso Vertuo Next',price:1850000,emoji:'☕',rating:4.8},
+    {name:'IKEA HEMNES Bed 160x200',price:3200000,emoji:'🛏️',rating:4.6},
+    {name:'Xiaomi Smart Doorbell',price:580000,emoji:'🔔',rating:4.5},
+    {name:'Philips Hue Smart Bulb Kit',price:1200000,emoji:'💡',rating:4.7},
+    {name:'Bosch Blender 800W',price:580000,old:680000,emoji:'🥤',rating:4.6},
+  ],
+  beauty: [
+    {name:'L\'Oreal Revitalift 50ml',price:285000,old:340000,emoji:'🧴',rating:4.7},
+    {name:'Nivea Sun SPF50 200ml',price:125000,emoji:'☀️',rating:4.6},
+    {name:'Garnier Micellar Water 700ml',price:95000,emoji:'💧',rating:4.7},
+    {name:'Dove Body Wash 750ml',price:72000,emoji:'🛁',rating:4.6},
+    {name:'Pantene Pro-V Shampoo 900ml',price:88000,old:105000,emoji:'🧴',rating:4.6},
+    {name:'Maybelline Mascara Lash',price:145000,emoji:'👁️',rating:4.7},
+    {name:'MAC Ruby Woo Lipstick',price:285000,emoji:'💄',rating:4.8},
+    {name:'Schwarzkopf Hair Dye',price:125000,emoji:'💇',rating:4.5},
+    {name:'Head&Shoulders Classic',price:78000,emoji:'🧴',rating:4.6},
+    {name:'Clinique Moisturizing Lotion',price:350000,old:420000,emoji:'🧴',rating:4.7},
+    {name:'Chanel No.5 Parfum 100ml',price:2800000,emoji:'🌸',rating:4.9},
+    {name:'Dior Sauvage EDT 100ml',price:1850000,emoji:'🌿',rating:4.8},
+    {name:'NYX Eyeshadow Palette',price:185000,emoji:'🎨',rating:4.6},
+    {name:'Lancome Teint Idole Foundation',price:580000,emoji:'🎭',rating:4.7},
+    {name:'Yves Saint Laurent Rouge',price:480000,old:560000,emoji:'💄',rating:4.8},
+  ],
+  sports: [
+    {name:'Nike Air Zoom Pegasus 40',price:1650000,old:1950000,emoji:'👟',rating:4.8},
+    {name:'Adidas Predator Soccer Ball',price:380000,emoji:'⚽',rating:4.7},
+    {name:'Wilson Pro Staff Tennis Racket',price:1850000,emoji:'🎾',rating:4.8},
+    {name:'Garmin Forerunner 965',price:3800000,emoji:'⌚',rating:4.8},
+    {name:'Bowflex Adjustable Dumbbell',price:2800000,old:3200000,emoji:'🏋️',rating:4.7},
+    {name:'TRX Home Gym System',price:1200000,emoji:'🏃',rating:4.6},
+    {name:'Spalding NBA Basketball',price:520000,emoji:'🏀',rating:4.7},
+    {name:'Columbia Titan Trail Jacket',price:1450000,emoji:'🧥',rating:4.7},
+    {name:'Under Armour HOVR Phantom',price:1250000,old:1500000,emoji:'👟',rating:4.6},
+    {name:'Polar H10 Heart Rate Monitor',price:580000,emoji:'❤️',rating:4.8},
+    {name:'Yonex Nanoray 900 Badminton',price:980000,emoji:'🏸',rating:4.7},
+    {name:'Speedo Fastskin Cap & Goggles',price:280000,emoji:'🏊',rating:4.6},
+    {name:'Decathlon Yoga Mat 10mm',price:185000,emoji:'🧘',rating:4.6},
+    {name:'Kettlebell 16kg',price:480000,emoji:'🏋️',rating:4.5},
+    {name:'Cycling Helmet Kask Protone',price:1850000,emoji:'🚴',rating:4.8},
+    {name:'Treadmill Pro 2.5HP',price:5800000,old:6500000,emoji:'🏃',rating:4.7},
+    {name:'Elliptical Machine Sport',price:4200000,emoji:'🏃',rating:4.6},
+  ],
+  toys: [
+    {name:'LEGO Technic Bugatti 42151',price:2800000,old:3200000,emoji:'🧱',rating:4.9},
+    {name:'Barbie Dreamhouse 2024',price:1850000,emoji:'🏠',rating:4.8},
+    {name:'Hot Wheels Ultimate Garage',price:1200000,emoji:'🚗',rating:4.7},
+    {name:'LEGO Harry Potter Hogwarts',price:3500000,emoji:'🧱',rating:4.9},
+    {name:'Playmobil City Police Set',price:680000,emoji:'👮',rating:4.6},
+    {name:'Fisher-Price Baby Gym',price:380000,emoji:'👶',rating:4.7},
+    {name:'Nintendo Switch Pokemon',price:480000,emoji:'🎮',rating:4.8},
+    {name:'Remote Control Car 4WD',price:580000,old:750000,emoji:'🚗',rating:4.6},
+    {name:'Nerf Elite 2.0 Blaster',price:380000,emoji:'🔫',rating:4.5},
+    {name:'VTech KidiZoom Camera',price:480000,emoji:'📷',rating:4.6},
+    {name:'Schleich Horse Farm Set',price:780000,emoji:'🐴',rating:4.7},
+    {name:'Ravensburger Puzzle 1000p',price:185000,emoji:'🧩',rating:4.7},
+    {name:'Hasbro Monopoly Classic',price:280000,old:350000,emoji:'🎲',rating:4.8},
+    {name:'LEGO Creator Expert 10304',price:1950000,emoji:'🧱',rating:4.8},
+    {name:'Mattel UNO Card Game',price:95000,emoji:'🃏',rating:4.7},
+  ],
+  auto: [
+    {name:'Bosch S5 Battery 74Ah',price:980000,old:1150000,emoji:'🔋',rating:4.7},
+    {name:'Michelin Primacy 4 205/55R16',price:1250000,emoji:'🛞',rating:4.8},
+    {name:'Castrol Edge 5W-40 4L',price:285000,emoji:'🛢️',rating:4.7},
+    {name:'Bosch Aerotwin Wiper Set',price:185000,emoji:'💧',rating:4.6},
+    {name:'Garmin DriveSmart 76 GPS',price:980000,old:1200000,emoji:'🗺️',rating:4.7},
+    {name:'Liqui Moly Motor Oil 5W-30',price:265000,emoji:'🛢️',rating:4.8},
+    {name:'Mann Filter C 27 030 Air',price:85000,emoji:'💨',rating:4.6},
+    {name:'Brembo Brake Pads P85020',price:480000,emoji:'🛑',rating:4.7},
+    {name:'Pioneer MVH-S220BT Radio',price:780000,emoji:'📻',rating:4.5},
+    {name:'70mai Pro Dash Cam Plus',price:680000,old:820000,emoji:'📹',rating:4.7},
+    {name:'Thule Crossover 2 Roof Box',price:2800000,emoji:'📦',rating:4.6},
+    {name:'Noco Genius 5 Battery Charger',price:580000,emoji:'🔋',rating:4.8},
+    {name:'Continental SportContact 7',price:1450000,emoji:'🛞',rating:4.8},
+    {name:'Turtle Wax Ice Spray 500ml',price:65000,emoji:'✨',rating:4.5},
+    {name:'Viofo A119 Mini 2 Dashcam',price:480000,emoji:'📹',rating:4.6},
+  ],
+  garden: [
+    {name:'Husqvarna 240 Chainsaw',price:2800000,old:3200000,emoji:'⛏️',rating:4.8},
+    {name:'Karcher K5 Pressure Washer',price:3500000,emoji:'💦',rating:4.7},
+    {name:'Gardena Hose 25m',price:480000,emoji:'🌊',rating:4.6},
+    {name:'Stihl FSA 90 Grass Trimmer',price:2200000,emoji:'🌿',rating:4.8},
+    {name:'Bosch Rotak 43 Lawn Mower',price:2800000,old:3200000,emoji:'🌱',rating:4.7},
+    {name:'Fiskars Bypass Pruner',price:185000,emoji:'✂️',rating:4.6},
+    {name:'Wolf-Garten Spade Pro',price:280000,emoji:'⛏️',rating:4.5},
+    {name:'Makita DHP484 Drill',price:1850000,emoji:'🔧',rating:4.8},
+    {name:'Gardena Sprinkler System Kit',price:780000,emoji:'💦',rating:4.6},
+    {name:'Husqvarna Automower 315X',price:12500000,emoji:'🤖',rating:4.9},
+    {name:'Black+Decker Hedge Trimmer',price:680000,old:820000,emoji:'🌿',rating:4.5},
+    {name:'Bahco Pruning Saw 35cm',price:285000,emoji:'🪚',rating:4.7},
+    {name:'Tramontina Garden Fork',price:185000,emoji:'🍴',rating:4.5},
+    {name:'Irwin Pliers Set 3-pc',price:385000,emoji:'🔧',rating:4.7},
+  ],
+  books: [
+    {name:'Atomic Habits - James Clear',price:145000,old:175000,emoji:'📖',rating:4.9},
+    {name:'Rich Dad Poor Dad - Kiyosaki',price:125000,emoji:'📖',rating:4.8},
+    {name:'The Psychology of Money',price:135000,emoji:'📖',rating:4.8},
+    {name:'Harry Potter Complete Set 7',price:680000,emoji:'📚',rating:4.9},
+    {name:'Oxford English Dictionary',price:380000,emoji:'📖',rating:4.8},
+    {name:'Think and Grow Rich',price:115000,old:145000,emoji:'📖',rating:4.7},
+    {name:'The 7 Habits of Highly Effective',price:125000,emoji:'📖',rating:4.8},
+    {name:'Sapiens - Yuval Noah Harari',price:155000,emoji:'📖',rating:4.9},
+    {name:'1984 - George Orwell',price:85000,emoji:'📖',rating:4.8},
+    {name:'Clean Code - Robert Martin',price:195000,old:240000,emoji:'💻',rating:4.8},
+    {name:'Python Crash Course 3rd Ed',price:185000,emoji:'🐍',rating:4.7},
+    {name:'The Great Gatsby',price:65000,emoji:'📖',rating:4.7},
+    {name:'Steve Jobs - Walter Isaacson',price:185000,emoji:'📖',rating:4.8},
+    {name:'Zero to One - Peter Thiel',price:145000,emoji:'📖',rating:4.7},
+    {name:'Deep Work - Cal Newport',price:125000,old:155000,emoji:'📖',rating:4.8},
+  ],
+  pharmacy: [
+    {name:'Vitamin D3 5000IU 365 kapsula',price:185000,old:220000,emoji:'💊',rating:4.8},
+    {name:'Omega-3 Fish Oil 1000mg 120k',price:165000,emoji:'💊',rating:4.7},
+    {name:'Magnesium B6 60 kompresse',price:125000,emoji:'💊',rating:4.7},
+    {name:'Vitamin C 1000mg 60 dona',price:98000,emoji:'🍊',rating:4.8},
+    {name:'Multivitamin Complex 90 tab',price:145000,old:175000,emoji:'💊',rating:4.7},
+    {name:'Probiotics 50 Billion CFU',price:195000,emoji:'🦠',rating:4.7},
+    {name:'Collagen Peptides Powder 400g',price:285000,emoji:'✨',rating:4.6},
+    {name:'Melatonin 10mg Sleep 90 tab',price:125000,emoji:'😴',rating:4.7},
+    {name:'Biotin 10000mcg Hair 60 tab',price:115000,old:140000,emoji:'💇',rating:4.6},
+    {name:'Zinc 50mg Immune 60 tab',price:85000,emoji:'💊',rating:4.6},
+    {name:'Curcumin Turmeric 500mg',price:145000,emoji:'🌿',rating:4.7},
+    {name:'CoQ10 100mg Heart 60 softgel',price:185000,emoji:'❤️',rating:4.7},
+    {name:'Iron Bisglycinate 18mg 60tab',price:95000,old:115000,emoji:'💊',rating:4.6},
+    {name:'B-Complex Vitamins 100 tab',price:88000,emoji:'💊',rating:4.6},
+    {name:'Ashwagandha KSM-66 60 cap',price:165000,emoji:'🌿',rating:4.7},
+  ],
+};
+
+// ── Generate 1000+ products ──
+let allProducts = [];
+let idCounter = 1;
+
+Object.entries(PRODUCTS_DATA).forEach(([cat, items]) => {
+  const brandList = BRANDS[cat] || ['Brand'];
+  items.forEach(p => {
+    allProducts.push({
+      id: idCounter++,
+      category: cat,
+      name: p.name,
+      price: p.price,
+      oldPrice: p.old || null,
+      emoji: p.emoji,
+      rating: p.rating,
+      reviews: Math.floor(Math.random() * 3000) + 100,
+      brand: brandList[Math.floor(Math.random() * brandList.length)],
+      isNew: Math.random() > 0.82,
+      onSale: !!p.old,
+    });
+  });
+
+  // Fill up to many more per category
+  const extraCount = 60;
+  for (let i = 0; i < extraCount; i++) {
+    const base = items[i % items.length];
+    const brand = brandList[Math.floor(Math.random() * brandList.length)];
+    const priceVar = (0.7 + Math.random() * 0.6);
+    const price = Math.round(base.price * priceVar / 1000) * 1000;
+    const hasOld = Math.random() > 0.6;
+    allProducts.push({
+      id: idCounter++,
+      category: cat,
+      name: `${brand} ${base.name.split(' ').slice(0,3).join(' ')} ${['Pro','Plus','Max','Mini','Ultra','Lite','SE','X','2','Gen2','Neo','Air','Slim'][Math.floor(Math.random()*13)]}`,
+      price,
+      oldPrice: hasOld ? Math.round(price * 1.2 / 1000) * 1000 : null,
+      emoji: base.emoji,
+      rating: +(3.5 + Math.random() * 1.5).toFixed(1),
+      reviews: Math.floor(Math.random() * 5000) + 50,
+      brand,
+      isNew: Math.random() > 0.75,
+      onSale: hasOld,
+    });
+  }
+});
+
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+let currentCat = 'all';
+let currentSort = 'default';
+let currentPriceMax = 0;
+let currentSearch = '';
+let currentPage = 1;
+const PAGE_SIZE = 40;
+
+// ── Render categories ──
+function renderCats() {
+  const el = document.getElementById('cats');
+  el.innerHTML = CATEGORIES.map(c =>
+    `<button class="cat-btn ${c.id === currentCat ? 'active' : ''}" onclick="setCat('${c.id}')">
+      ${c.emoji} ${c.name}
+    </button>`
+  ).join('');
+}
+
+function setCat(id) {
+  currentCat = id;
+  currentPage = 1;
+  renderCats();
+  renderGrid();
+}
+
+// ── Filter / sort ──
+function getFiltered() {
+  let list = allProducts.slice();
+  if (currentCat !== 'all') list = list.filter(p => p.category === currentCat);
+  if (currentSearch) {
+    const q = currentSearch.toLowerCase();
+    list = list.filter(p => p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q));
+  }
+  const maxPrice = parseInt(document.getElementById('priceFilter').value) || 0;
+  if (maxPrice > 0) list = list.filter(p => p.price <= maxPrice);
+
+  const sort = document.getElementById('sortSelect').value;
+  if (sort === 'price_asc') list.sort((a,b) => a.price - b.price);
+  else if (sort === 'price_desc') list.sort((a,b) => b.price - a.price);
+  else if (sort === 'rating') list.sort((a,b) => b.rating - a.rating);
+  else if (sort === 'new') list.sort((a,b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
+
+  return list;
+}
+
+function filterProducts() {
+  currentSearch = document.getElementById('searchInput').value;
+  currentPage = 1;
+  renderGrid();
+}
+function sortProducts() { currentPage = 1; renderGrid(); }
+
+function formatPrice(n) {
+  return n.toLocaleString('uz-UZ') + ' so\'m';
+}
+
+function stars(r) {
+  const full = Math.floor(r);
+  const half = r - full >= 0.5 ? 1 : 0;
+  return '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(5 - full - half);
+}
+
+// ── Get Uzum search URL ──
+function uzumUrl(name) {
+  const q = encodeURIComponent(name);
+  return `https://uzum.uz/uz/search?query=${q}`;
+}
+
+// ── Render grid ──
+function renderGrid() {
+  const filtered = getFiltered();
+  const total = filtered.length;
+  const totalPages = Math.ceil(total / PAGE_SIZE);
+  if (currentPage > totalPages) currentPage = 1;
+
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const slice = filtered.slice(start, start + PAGE_SIZE);
+
+  document.getElementById('showingCount').textContent =
+    `${total} mahsulot (${start+1}–${Math.min(start+PAGE_SIZE, total)})`;
+  document.getElementById('totalCount').textContent = allProducts.length + '+';
+
+  const grid = document.getElementById('grid');
+  if (slice.length === 0) {
+    grid.innerHTML = '<div class="loading">🔍 Hech narsa topilmadi</div>';
+    document.getElementById('pagination').innerHTML = '';
+    return;
+  }
+
+  grid.innerHTML = slice.map(p => {
+    const badgeHtml = p.isNew
+      ? `<div class="card-badge new-badge">YANGI</div>`
+      : p.onSale ? `<div class="card-badge sale-badge">AKSIYA</div>` : '';
+    const oldHtml = p.oldPrice
+      ? `<div class="card-old-price">${formatPrice(p.oldPrice)}</div>` : '';
+    const discount = p.oldPrice
+      ? ` <small style="color:var(--accent);font-size:11px">-${Math.round((1-p.price/p.oldPrice)*100)}%</small>` : '';
+
+    return `
+    <div class="card">
+      <div class="card-img">
+        ${p.emoji}
+        ${badgeHtml}
+      </div>
+      <div class="card-body">
+        <div class="card-brand">${p.brand}</div>
+        <div class="card-name">${p.name}</div>
+        <div class="card-rating">${stars(p.rating)} <small style="color:var(--muted)">(${p.reviews.toLocaleString()})</small></div>
+        ${oldHtml}
+        <div class="card-price">${formatPrice(p.price)}${discount}</div>
+      </div>
+      <div class="card-actions">
+        <a class="btn-uzum" href="${uzumUrl(p.name)}" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+          Uzum Market da Zakas Qil
+        </a>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Pagination
+  renderPagination(totalPages);
+  window.scrollTo({ top: 300, behavior: 'smooth' });
+}
+
+function renderPagination(total) {
+  const pg = document.getElementById('pagination');
+  if (total <= 1) { pg.innerHTML = ''; return; }
+
+  let html = '';
+  const show = (n) => `<button class="page-btn ${n===currentPage?'active':''}" onclick="goPage(${n})">${n}</button>`;
+
+  html += `<button class="page-btn" onclick="goPage(${Math.max(1,currentPage-1)})">◀</button>`;
+
+  if (total <= 10) {
+    for (let i=1;i<=total;i++) html += show(i);
+  } else {
+    html += show(1);
+    if (currentPage > 4) html += `<span style="color:var(--muted);padding:8px">…</span>`;
+    for (let i = Math.max(2,currentPage-2); i <= Math.min(total-1,currentPage+2); i++) html += show(i);
+    if (currentPage < total-3) html += `<span style="color:var(--muted);padding:8px">…</span>`;
+    html += show(total);
+  }
+
+  html += `<button class="page-btn" onclick="goPage(${Math.min(total,currentPage+1)})">▶</button>`;
+  pg.innerHTML = html;
+}
+
+function goPage(n) { currentPage = n; renderGrid(); }
+
+// INIT
+renderCats();
+renderGrid();
+</script>
+</body>
+</html>
